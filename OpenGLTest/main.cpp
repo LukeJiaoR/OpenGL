@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
+/*
 static int year = 0, spin = 0, day = 0;
 static GLint fogMode;
 const int n = 100;
@@ -130,22 +131,46 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 	}
 }
+*/
+void init(void)
+{
+	glClearColor(1.0, 1.0, 1.0, 0.0); //设置窗口颜色
+	//OpenGL默认的处理是在三围下，下面两行将三围左边变成二维坐标
+	glMatrixMode(GL_PROJECTION);
+	gluOrtho2D(0.0, 200.0, 0.0, 150.0);//规定区域的x坐标值从0.0到200.0，y从0.0到150.0
+}
 
+void lineSegment(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT);//让赋值的窗口显示。GL_COLOR_BUFFER_BIT是一个常量，表示颜色缓存中的位置
+	glColor3f(1.0, 0.0, 0.0); //3f表表示使用浮点数，
+	
+
+	glBegin (GL_LINES);
+	  glVertex2i(180, 15);
+	  glVertex2i(10, 145);
+	glEnd ();
+
+	glFlush ();
+}
 int main(int argc, char** argv)
 {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);//设置窗口缓存和颜色模式
+	glutInit(&argc, argv);//初始化窗口
+
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);//设置窗口缓存和颜色模式
 	glutInitWindowSize(400, 400);
-	glutInitWindowPosition(100, 100); //窗口左上角确切的位置
+	glutInitWindowPosition(50, 100); //窗口左上角确切的位置
+	
 	glutCreateWindow("OpengGL 程序");// 窗口上显示的名称
 	init();
+	glutDisplayFunc(lineSegment);
 	//glutDisplayFunc(DrawCircle); //屏幕上绘制的函数
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
+	//glutDisplayFunc(display);
+	//glutReshapeFunc(reshape);
 	//glutKeyboardFunc(keyboard);
-	glutMouseFunc(mouse);
+	//glutMouseFunc(mouse);
 
 	glutMainLoop();
 
-	return 0;
+
 }
