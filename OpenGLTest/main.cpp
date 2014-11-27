@@ -132,12 +132,25 @@ void keyboard(unsigned char key, int x, int y)
 	}
 }
 */
+#define xmin = 0
+#define xmax =200
+#define ymin = 0
+#define ymax = 150
+
+
+class wcPt2D{
+public:
+	GLfloat x, y;
+};
+
 void init(void)
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0); //设置窗口颜色
 	//OpenGL默认的处理是在三围下，下面两行将三围左边变成二维坐标
 	glMatrixMode(GL_PROJECTION);
-	gluOrtho2D(0.0, 200.0, 0.0, 150.0);//规定区域的x坐标值从0.0到200.0，y从0.0到150.0
+	glLoadIdentity();
+	gluOrtho2D(0, 200,
+		      0, 150);    //规定区域的x坐标值从0.0到200.0，y从0.0到150.0
 }
 
 void lineSegment(void)
@@ -145,11 +158,32 @@ void lineSegment(void)
 	glClear(GL_COLOR_BUFFER_BIT);//让赋值的窗口显示。GL_COLOR_BUFFER_BIT是一个常量，表示颜色缓存中的位置
 	glColor3f(1.0, 0.0, 0.0); //3f表表示使用浮点数，
 	
-
+	//画线
 	glBegin (GL_LINES);
 	  glVertex2i(180, 15);
 	  glVertex2i(10, 145);
 	glEnd ();
+	//画点
+	int point1[] = { 75, 150 };
+	GLfloat point2[] = { 261.91, 50.67, 188.33 }; //
+	glBegin(GLU_POINT);
+	  glVertex2i (50,100);
+	  glVertex2iv (point1);
+	glEnd();
+	//三围点
+	int point1[] = { 75, 150 };
+	glBegin(GLU_POINT);
+	glVertex3f(-78.05,909.72,14.60);
+	glVertex3f(261.91, 50.67, 188.33);
+	glEnd();
+	//通过结构体画线
+	wcPt2D pointPos;
+
+	pointPos.x = 120.75;
+	pointPos.y = 45.30;
+	glBegin(GLU_POINT);
+	    glVertex2i(pointPos.x, pointPos.y);
+    glEnd();
 
 	glFlush ();
 }
@@ -169,6 +203,9 @@ int main(int argc, char** argv)
 	//glutReshapeFunc(reshape);
 	//glutKeyboardFunc(keyboard);
 	//glutMouseFunc(mouse);
+	setPixel(x, y);    //将当前颜色设定值存入帧缓存的整数坐标位置
+	getPixel(x, y, color); //参数color得到可个存储在（x，y）像素出的RGB组合对应的整数
+
 
 	glutMainLoop();
 
